@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/ui/screens%20/email_verification_screen.dart';
+import 'package:task_manager/ui/screens/email_verification_screen.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 
 class LoginScreen extends StatelessWidget {

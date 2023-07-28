@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/ui/screens%20/email_verification_screen.dart';
-import 'package:task_manager/ui/screens%20/splash_screen.dart';
+import 'package:task_manager/ui/screens/auth/login_screen.dart';
+import 'package:task_manager/ui/screens/auth/otp_verification.dart';
+import 'package:task_manager/ui/screens/auth/reset_password_screen.dart';
+import 'package:task_manager/ui/screens/auth/signup_screen.dart';
+import 'package:task_manager/ui/screens/email_verification_screen.dart';
 
 class TaskManagerApp extends StatelessWidget {
   const TaskManagerApp({Key? key}) : super(key: key);
@@ -62,7 +65,7 @@ class TaskManagerApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.light,
-      home: const EmailVerificationScreen(),
+      home:  const OtpVerificationScreen(),
     );
   }
 }
