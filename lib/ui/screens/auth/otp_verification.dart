@@ -1,11 +1,66 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manager/data/utils/auth_utility.dart';
+import 'package:task_manager/data/services/network_response.dart';
+import 'package:task_manager/data/services/network_caller.dart';
+import 'package:task_manager/data/utils/urls.dart';
 import 'package:task_manager/ui/screens/auth/login_screen.dart';
 import 'package:task_manager/ui/screens/auth/reset_password_screen.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 
-class OtpVerificationScreen extends StatelessWidget {
+class OtpVerificationScreen extends StatefulWidget {
   const OtpVerificationScreen({Key? key}) : super(key: key);
+
+  @override
+  State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
+}
+
+class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
+  TextEditingController otp = TextEditingController();
+
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
+  bool _verifyInProgress = false;
+
+  Future<void> verifyEmail() async {
+    _verifyInProgress = true;
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    String email = sharedPrefs.getString('email')!;
+    log(email);
+    log(otp.text);
+
+    if (mounted) {
+      setState(() {});
+    }
+    String otpUrl = "${Urls.resetPassOTP}$email/${otp.text.trim()}";
+    final NetworkResponse response = await NetworkCaller()
+        .verifyEmailRequest(otpUrl);
+    _verifyInProgress = false;
+    if (mounted) {
+      setState(() {});
+    }
+    if (response.isSuccess) {
+      await AuthUtility.saveString('otp',otp.text);
+      otp.clear();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Success')));
+        Navigator.push(context, MaterialPageRoute(builder: (_)=> const ResetPasswordScreen()));
+      }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Incorrect OTP')));
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +90,13 @@ class OtpVerificationScreen extends StatelessWidget {
                 ),
                 const SizedBox(
                   height: 24,
+                ),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter OTP',
+                  ),
+                  controller: otp,
                 ),
                 // PinCodeTextField(
                 //   length: 6,
@@ -72,14 +134,16 @@ class OtpVerificationScreen extends StatelessWidget {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                          context, MaterialPageRoute(builder: (
-                          context) => const ResetPasswordScreen()), (
-                          route) => false);
-                    },
-                    child: const Text('Verify'),
+                  child: Visibility(
+                    visible: _verifyInProgress == false,
+                    replacement: const Center(child: CircularProgressIndicator(),),
+                    child: ElevatedButton(
+                      onPressed: ()  {
+                        verifyEmail();
+
+                      },
+                      child: const Text('Verify'),
+                    ),
                   ),
                 ),
                 const SizedBox(

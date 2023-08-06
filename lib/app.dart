@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/ui/screens/auth/login_screen.dart';
-import 'package:task_manager/ui/screens/auth/otp_verification.dart';
-import 'package:task_manager/ui/screens/auth/reset_password_screen.dart';
-import 'package:task_manager/ui/screens/auth/signup_screen.dart';
-import 'package:task_manager/ui/screens/email_verification_screen.dart';
+import 'package:task_manager/ui/screens/splash_screen.dart';
 
-class TaskManagerApp extends StatelessWidget {
+class TaskManagerApp extends StatefulWidget {
+  static GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
   const TaskManagerApp({Key? key}) : super(key: key);
 
   @override
+  State<TaskManagerApp> createState() => _TaskManagerAppState();
+}
+
+class _TaskManagerAppState extends State<TaskManagerApp> {
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      key: TaskManagerApp.globalKey,
       title: 'Task Manager',
       theme: ThemeData(
         brightness: Brightness.light,
@@ -65,7 +68,7 @@ class TaskManagerApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.light,
-      home:  const OtpVerificationScreen(),
+      home: const SplashScreen(),
     );
   }
 }

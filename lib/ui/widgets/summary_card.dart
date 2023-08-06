@@ -1,27 +1,67 @@
 import 'package:flutter/material.dart';
 
-class SummaryCard extends StatelessWidget {
-  const SummaryCard({
-    super.key, required this.number, required this.title,
-  });
+// class FixedPositionCard extends StatelessWidget {
+//   final int number;
+//   final String title;
+//
+//   const FixedPositionCard({
+//     Key? key,
+//     required this.number,
+//     required this.title,
+//   }) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.center, // Center the card horizontally
+//       children: [
+//         SummaryCard(number: number, title: title),
+//       ],
+//     );
+//   }
+// }
 
+class SummaryCard extends StatelessWidget {
   final int number;
   final String title;
 
+  const SummaryCard({super.key,
+    required this.number,
+    required this.title,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Text('$number', style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600
-            ),),
-            Text(title),
-          ],
+    return SizedBox(
+      width: 100,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(6),
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded( // Wrap the Column with Expanded
+                    child: Text(
+                      '${number < 10 ? '0$number' : number}',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ]
+            ),
+          ),
         ),
       ),
     );

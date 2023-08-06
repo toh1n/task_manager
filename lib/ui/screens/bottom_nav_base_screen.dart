@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/ui/screens/cancelled_task_screen.dart';
-import 'package:task_manager/ui/screens/completed_task_screen.dart';
-import 'package:task_manager/ui/screens/in_progress_task_screen.dart';
-import 'package:task_manager/ui/screens/new_task_screen.dart';
+import 'package:task_manager/ui/screens/tasks/cancelled_task_screen.dart';
+import 'package:task_manager/ui/screens/tasks/completed_task_screen.dart';
+import 'package:task_manager/ui/screens/tasks/in_progress_task_screen.dart';
+import 'package:task_manager/ui/screens/tasks/new_task_screen.dart';
 
 class BottomNavBaseScreen extends StatefulWidget {
   const BottomNavBaseScreen({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class _BottomNavBaseScreenState extends State<BottomNavBaseScreen> {
   final List<Widget> _screens = const [
     NewTaskScreen(),
     InProgressTaskScreen(),
-    CancelledTaskScreen(),
+    CanceledTaskScreen(),
     CompletedTaskScreen()
   ];
 
@@ -28,7 +28,7 @@ class _BottomNavBaseScreenState extends State<BottomNavBaseScreen> {
         currentIndex: _selectedScreenIndex,
         unselectedItemColor: Colors.grey,
         unselectedLabelStyle: const TextStyle(
-          color: Colors.grey
+            color: Colors.grey
         ),
         showUnselectedLabels: true,
         selectedItemColor: Colors.green,
