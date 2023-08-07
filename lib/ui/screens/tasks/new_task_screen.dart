@@ -81,7 +81,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const UserProfileBanner(),
+            const UserProfileAppBar(),
             _getCountSummaryInProgress
                 ? const LinearProgressIndicator()
                 : Padding(

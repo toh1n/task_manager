@@ -1,21 +1,34 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:task_manager/data/utils/auth_utility.dart';
 import 'package:task_manager/ui/screens/auth/login_screen.dart';
 import 'package:task_manager/ui/screens/auth/update_profile_screen.dart';
 
-class UserProfileBanner extends StatefulWidget {
+class UserProfileAppBar extends StatefulWidget {
   final bool? isUpdateScreen;
 
-  const UserProfileBanner({
+  const UserProfileAppBar({
     super.key,
     this.isUpdateScreen,
   });
 
   @override
-  State<UserProfileBanner> createState() => _UserProfileBannerState();
+  State<UserProfileAppBar> createState() => _UserProfileAppBarState();
 }
 
-class _UserProfileBannerState extends State<UserProfileBanner> {
+class _UserProfileAppBarState extends State<UserProfileAppBar> {
+  String? base64Image;
+  bool isNull = true;
+  @override
+  void initState(){
+    super.initState();
+    base64Image = AuthUtility.userInfo.data?.photo;
+    if(base64Image != null)
+      {
+        isNull = false; 
+      }
+
+  }
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -35,14 +48,12 @@ class _UserProfileBannerState extends State<UserProfileBanner> {
               visible: (widget.isUpdateScreen ?? false) == false,
               child: Row(
                 children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      AuthUtility.userInfo.data?.photo ?? '',
+                  Visibility(
+                    visible: isNull == false,
+                    replacement: Icon(Icons.person),
+                    child: CircleAvatar(
+                      backgroundImage: MemoryImage(base64Decode(base64Image!)),
                     ),
-                    onBackgroundImageError: (_, __) {
-                      const Icon(Icons.image);
-                    },
-                    radius: 15,
                   ),
                   const SizedBox(
                     width: 16,
@@ -77,7 +88,7 @@ class _UserProfileBannerState extends State<UserProfileBanner> {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const LoginScreen()),
-                      (route) => false);
+                  (route) => false);
             }
           },
           icon: const Icon(Icons.logout),

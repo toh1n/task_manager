@@ -52,7 +52,7 @@ class _CanceledTaskScreenState extends State<CanceledTaskScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const UserProfileBanner(),
+            const UserProfileAppBar(),
             Expanded(
               child: _getCanceledTasks
                   ? const Center(

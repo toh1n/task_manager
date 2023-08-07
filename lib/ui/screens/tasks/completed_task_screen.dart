@@ -53,7 +53,7 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const UserProfileBanner(),
+            const UserProfileAppBar(),
             Expanded(
               child: _getCompletedTasks
                   ? const Center(

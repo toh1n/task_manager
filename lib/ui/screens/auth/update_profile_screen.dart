@@ -1,253 +1,269 @@
+
+
+import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:task_manager/data/utils/auth_utility.dart';
-import 'package:task_manager/data/services/network_response.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:task_manager/data/models/login_model.dart';
 import 'package:task_manager/data/services/network_caller.dart';
+import 'package:task_manager/data/services/network_response.dart';
+import 'package:task_manager/data/utils/auth_utility.dart';
 import 'package:task_manager/data/utils/urls.dart';
+import 'package:task_manager/ui/screens/bottom_nav_base_screen.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 import 'package:task_manager/ui/widgets/user_profile_banner.dart';
-import 'package:image_picker/image_picker.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
-  const UpdateProfileScreen({super.key});
+  const UpdateProfileScreen({Key? key}) : super(key: key);
 
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
+  UserData userData = AuthUtility.userInfo.data!;
+  final TextEditingController _emailTEController = TextEditingController();
+  final TextEditingController _firstNameTEController = TextEditingController();
+  final TextEditingController _lastNameTEController = TextEditingController();
+  final TextEditingController _mobileTEController = TextEditingController();
+  final TextEditingController _passwordTEController = TextEditingController();
 
-  TextEditingController emailTEController = TextEditingController();
-  TextEditingController firstNameTEController = TextEditingController();
-  TextEditingController lastNameTEController = TextEditingController();
-  TextEditingController passwordTEController = TextEditingController();
-  TextEditingController profilePictureTEController = TextEditingController();
-  TextEditingController phoneNumberTEController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  XFile? imageFile;
+  ImagePicker picker = ImagePicker();
+  bool _profileInProgress = false;
+  String photo = "json";
 
-  File? _pImage;
-
-  bool isLoading = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    userData();
+    _emailTEController.text = userData.email ?? '';
+    _firstNameTEController.text = userData.firstName ?? '';
+    _lastNameTEController.text = userData.lastName ?? '';
+    _mobileTEController.text = userData.mobile ?? '';
   }
 
-  Future<void> userData() async {
-    emailTEController.text = AuthUtility.userInfo.data!.email!;
-    firstNameTEController.text = AuthUtility.userInfo.data!.firstName!;
-    lastNameTEController.text = AuthUtility.userInfo.data!.lastName!;
-    phoneNumberTEController.text = AuthUtility.userInfo.data!.mobile!;
-  }
-
-  Future<void> updateProfile()async {
-    isLoading = true;
-    if(mounted){
+  Future<void> updateProfile() async {
+    _profileInProgress = true;
+    if (mounted) {
       setState(() {});
     }
 
-    Map<String, dynamic> body = {
-      "email":emailTEController.text.trim(),
-      "firstName":firstNameTEController.text.trim(),
-      "lastName":lastNameTEController.text.trim(),
-      "mobile":phoneNumberTEController.text.trim(),
-      "photo":_pImage.toString(),
+    log(photo);
+
+    final Map<String, dynamic> requestBody = {
+      "firstName": _firstNameTEController.text.trim(),
+      "lastName": _lastNameTEController.text.trim(),
+      "mobile": _mobileTEController.text.trim(),
+      "photo": photo
     };
+    if (_passwordTEController.text.isNotEmpty) {
+      requestBody['password'] = _passwordTEController.text;
+    }
 
-    NetworkResponse response = await NetworkCaller().postRequest(Urls.profileUpdate, body);
-
-    isLoading = false;
-    if(mounted){
+    final NetworkResponse response =
+    await NetworkCaller().postRequest(Urls.profileUpdate, requestBody);
+    _profileInProgress = false;
+    if (mounted) {
       setState(() {});
     }
-
-    if(response.isSuccess){
-      log(_pImage.toString());
-      log(response.statusCode.toString());
-    }else{
-      log(response.statusCode.toString());
+    if (response.isSuccess) {
+      userData.firstName = _firstNameTEController.text.trim();
+      userData.lastName = _lastNameTEController.text.trim();
+      userData.mobile = _mobileTEController.text.trim();
+      AuthUtility.updateUserInfo(userData);
+      AuthUtility.userInfo.data?.photo = photo;
+      setState(() {});
+      _passwordTEController.clear();
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Profile updated!')));
+      }
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => BottomNavBaseScreen()), (route) => false);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Profile update failed! Try again.')));
+      }
     }
-
-}
-
-  Future imagePick() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if(image==null){
-      return;
-    }
-    final imgTemp = File(image.path);
-    setState(() {
-      _pImage=imgTemp;
-      log(imgTemp.toString());
+  }
+  Future<void> selectImage() async {
+    picker.pickImage(source: ImageSource.gallery).then((xFile) async {
+      if (xFile != null) {
+        imageFile = xFile;
+        List<int> imageBytes = await imageFile!.readAsBytes();
+        String _photo = base64Encode(imageBytes);
+        if (mounted) {
+          setState(() {
+            photo = _photo;
+            log(photo);
+          });
+        }
+      }
     });
   }
 
+  Future<String> imageToBase64(XFile imageFile) async {
+    List<int> imageBytes = await imageFile.readAsBytes();
+    return base64Encode(imageBytes);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: ScreenBackground(
-          child: SingleChildScrollView(
+      body: ScreenBackground(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Material(child: UserProfileBanner(isUpdateScreen: true,)),
+                const UserProfileAppBar(
+                  isUpdateScreen: true,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
                 Padding(
-                  padding: const EdgeInsets.all(30.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    'Update Profile',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 70,
-                      ),
-                      Text(
-                        "Update Profile",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Stack(
-                        children: [
-                          Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 18.0),
-                            child: Center(
-                              child: CircleAvatar(
-                                radius: 70,
-                                backgroundColor: Colors.blueAccent,
-                                child: ClipOval(
-                                  child: _pImage!=null ? Image.file(_pImage!,
-                                    fit: BoxFit.cover,
-                                    width: 200.0,
-                                    height: 200.0,
-                                  ): Image.network('https://t4.ftcdn.net/jpg/01/86/29/31/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg'),
-
+                      InkWell(
+                        onTap: () {
+                          selectImage();
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          decoration: const BoxDecoration(color: Colors.white),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(14),
+                                color: Colors.grey,
+                                child: const Text(
+                                  'Photos',
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                            ),
-                          ),
-                          Row(
-                            children: [
                               const SizedBox(
-                                width: 210,
+                                width: 16,
                               ),
-                              Padding(
-                                padding:
-                                const EdgeInsets.symmetric(vertical: 30.0),
-                                child: CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor: Colors.deepOrangeAccent,
-                                    child: IconButton(
-                                        onPressed: () {
-                                          imagePick();
-                                        },
-                                        icon: const Icon(
-                                          Icons.edit,
-                                          color: Colors.white,
-                                        ))),
-                              ),
-                              const Spacer(
-                                flex: 20,
-                              ),
+                              Visibility(
+                                  visible: imageFile != null,
+                                  child: Text(imageFile?.name ?? ''))
                             ],
                           ),
-                        ],
+                        ),
                       ),
-
-                      // TextFormField(
-                      //   decoration: InputDecoration(
-                      //     prefixIcon: TextButton(
-                      //       style: TextButton.styleFrom(
-                      //         backgroundColor: Colors.teal,
-                      //         foregroundColor: Colors.white,
-                      //         shape: const RoundedRectangleBorder(
-                      //           borderRadius: BorderRadius.only(
-                      //             topLeft: Radius.circular(5.0),
-                      //             bottomLeft: Radius.circular(5.0),
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       onPressed: () async {
-                      //         await imagePick();
-                      //       },
-                      //       child: const Text('Photos'),
-                      //     ),
-                      //   ),
-                      // ),
                       const SizedBox(
                         height: 12,
                       ),
-
-
-                      TextField(
-                        controller: emailTEController,
+                      TextFormField(
+                        controller: _emailTEController,
                         keyboardType: TextInputType.emailAddress,
+                        readOnly: true,
                         decoration: const InputDecoration(
-                          hintText: "Email",
+                          hintText: 'Email',
                         ),
+                        validator: (String? value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Enter your email';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
                         height: 12,
                       ),
-                      TextField(
-                        controller: firstNameTEController,
+                      TextFormField(
+                        controller: _firstNameTEController,
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
-                          hintText: "First Name",
+                          hintText: 'First name',
                         ),
+                        validator: (String? value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Enter your first name';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
                         height: 12,
                       ),
-                      TextField(
-                        controller: lastNameTEController,
+                      TextFormField(
+                        controller: _lastNameTEController,
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
-                          hintText: "Last Name",
+                          hintText: 'Last name',
                         ),
+                        validator: (String? value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Enter your last name';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
                         height: 12,
                       ),
-                      TextField(
-                        controller: phoneNumberTEController,
-                        keyboardType: TextInputType.number,
+                      TextFormField(
+                        controller: _mobileTEController,
+                        keyboardType: TextInputType.phone,
                         decoration: const InputDecoration(
-                          hintText: "Mobile Number",
+                          hintText: 'Mobile',
                         ),
+                        validator: (String? value) {
+                          if ((value?.isEmpty ?? true) || value!.length < 11) {
+                            return 'Enter your valid mobile no';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
                         height: 12,
                       ),
-                      TextField(
-                        controller: passwordTEController,
+                      TextFormField(
+                        controller: _passwordTEController,
                         obscureText: true,
-                        keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
-                          hintText: "Password",
+                          hintText: 'Password',
                         ),
+                        validator: (String? value) {
+                          if ((value?.isEmpty ?? true) || value!.length <= 5) {
+                            return 'Enter a password more than 6 letters';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
-                        height: 12,
+                        height: 16,
                       ),
-
                       SizedBox(
                         width: double.infinity,
-                        child: Visibility(
-                          visible: isLoading == false,
-                          replacement: const Center(child: CircularProgressIndicator(),),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                updateProfile();
-                              },
-                              child: const Text("Update Profile", style: TextStyle(fontSize: 16),)),
+                        child: _profileInProgress
+                            ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                            : ElevatedButton(
+                          onPressed: () {
+                            updateProfile();
+                          },
+                          child: const Text('Update'),
                         ),
-                      ),
-
+                      )
                     ],
                   ),
                 ),
@@ -256,7 +272,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           ),
         ),
       ),
-
     );
   }
+
+
 }
