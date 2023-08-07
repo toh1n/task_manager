@@ -18,6 +18,7 @@ class UpdateProfileScreen extends StatefulWidget {
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
+
   TextEditingController emailTEController = TextEditingController();
   TextEditingController firstNameTEController = TextEditingController();
   TextEditingController lastNameTEController = TextEditingController();
@@ -25,7 +26,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   TextEditingController profilePictureTEController = TextEditingController();
   TextEditingController phoneNumberTEController = TextEditingController();
 
-  File? _pimage;
+  File? _pImage;
 
   bool isLoading = false;
 
@@ -53,7 +54,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       "firstName":firstNameTEController.text.trim(),
       "lastName":lastNameTEController.text.trim(),
       "mobile":phoneNumberTEController.text.trim(),
-      "photo":_pimage.toString(),
+      "photo":_pImage.toString(),
     };
 
     NetworkResponse response = await NetworkCaller().postRequest(Urls.profileUpdate, body);
@@ -64,7 +65,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     }
 
     if(response.isSuccess){
-      log(_pimage.toString());
+      log(_pImage.toString());
       log(response.statusCode.toString());
     }else{
       log(response.statusCode.toString());
@@ -79,7 +80,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     }
     final imgTemp = File(image.path);
     setState(() {
-      _pimage=imgTemp;
+      _pImage=imgTemp;
       log(imgTemp.toString());
     });
   }
@@ -93,7 +94,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const Material(child: UserProfileBanner()),
+                const Material(child: UserProfileBanner(isUpdateScreen: true,)),
                 Padding(
                   padding: const EdgeInsets.all(30.0),
                   child: Column(
@@ -119,7 +120,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 radius: 70,
                                 backgroundColor: Colors.blueAccent,
                                 child: ClipOval(
-                                  child: _pimage!=null ? Image.file(_pimage!,
+                                  child: _pImage!=null ? Image.file(_pImage!,
                                     fit: BoxFit.cover,
                                     width: 200.0,
                                     height: 200.0,
@@ -131,7 +132,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           ),
                           Row(
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 width: 210,
                               ),
                               Padding(
@@ -144,12 +145,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                         onPressed: () {
                                           imagePick();
                                         },
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.edit,
                                           color: Colors.white,
                                         ))),
                               ),
-                              Spacer(
+                              const Spacer(
                                 flex: 20,
                               ),
                             ],
@@ -238,7 +239,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         width: double.infinity,
                         child: Visibility(
                           visible: isLoading == false,
-                          replacement: Center(child: CircularProgressIndicator(),),
+                          replacement: const Center(child: CircularProgressIndicator(),),
                           child: ElevatedButton(
                               onPressed: () {
                                 updateProfile();

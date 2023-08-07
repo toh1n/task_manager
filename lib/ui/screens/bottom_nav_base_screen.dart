@@ -3,6 +3,7 @@ import 'package:task_manager/ui/screens/tasks/cancelled_task_screen.dart';
 import 'package:task_manager/ui/screens/tasks/completed_task_screen.dart';
 import 'package:task_manager/ui/screens/tasks/in_progress_task_screen.dart';
 import 'package:task_manager/ui/screens/tasks/new_task_screen.dart';
+import 'package:task_manager/ui/widgets/user_profile_banner.dart';
 
 class BottomNavBaseScreen extends StatefulWidget {
   const BottomNavBaseScreen({Key? key}) : super(key: key);
