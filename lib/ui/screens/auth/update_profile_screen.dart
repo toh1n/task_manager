@@ -92,10 +92,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       if (xFile != null) {
         imageFile = xFile;
         List<int> imageBytes = await imageFile!.readAsBytes();
-        String photo = base64Encode(imageBytes);
+        String ph = base64Encode(imageBytes);
         if (mounted) {
           setState(() {
-            photo = photo;
+            photo = ph;
             log(photo);
           });
         }
