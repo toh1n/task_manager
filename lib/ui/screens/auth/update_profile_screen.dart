@@ -1,9 +1,5 @@
-
-
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:task_manager/data/models/login_model.dart';
@@ -83,7 +79,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('Profile updated!')));
       }
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => BottomNavBaseScreen()), (route) => false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => const BottomNavBaseScreen()), (route) => false);
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -96,10 +92,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       if (xFile != null) {
         imageFile = xFile;
         List<int> imageBytes = await imageFile!.readAsBytes();
-        String _photo = base64Encode(imageBytes);
+        String photo = base64Encode(imageBytes);
         if (mounted) {
           setState(() {
-            photo = _photo;
+            photo = photo;
             log(photo);
           });
         }

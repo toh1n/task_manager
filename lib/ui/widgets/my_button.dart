@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
-  bool visible;
-  VoidCallback voidCallback;
-   MyButton({super.key,required this.visible,required this.voidCallback});
+  final bool visible;
+  final VoidCallback voidCallback;
+  const MyButton({super.key,required this.visible,required this.voidCallback});
 
   @override
   Widget build(BuildContext context) {

@@ -7,15 +7,15 @@ class AuthUtility {
   static LoginModel userInfo = LoginModel();
 
   static Future<void> saveUserInfo(LoginModel model) async {
-    SharedPreferences _sharedPrefs = await SharedPreferences.getInstance();
-    await _sharedPrefs.setString('user-data', jsonEncode(model.toJson()));
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    await sharedPrefs.setString('user-data', jsonEncode(model.toJson()));
     userInfo = model;
   }
 
   static Future<void> updateUserInfo(UserData data) async {
-    SharedPreferences _sharedPrefs = await SharedPreferences.getInstance();
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     userInfo.data = data;
-    await _sharedPrefs.setString('user-data', jsonEncode(userInfo.toJson()));
+    await sharedPrefs.setString('user-data', jsonEncode(userInfo.toJson()));
   }
 
   static Future<void> saveString(String key, String data) async {
@@ -30,19 +30,19 @@ class AuthUtility {
   }
 
   static Future<LoginModel> getUserInfo() async {
-    SharedPreferences _sharedPrefs = await SharedPreferences.getInstance();
-    String value = _sharedPrefs.getString('user-data')!;
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    String value = sharedPrefs.getString('user-data')!;
     return LoginModel.fromJson(jsonDecode(value));
   }
 
   static Future<void> clearUserInfo() async {
-    SharedPreferences _sharedPrefs = await SharedPreferences.getInstance();
-    await _sharedPrefs.clear();
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    await sharedPrefs.clear();
   }
 
   static Future<bool> checkIfUserLoggedIn() async {
-    SharedPreferences _sharedPrefs = await SharedPreferences.getInstance();
-    bool isLogin = _sharedPrefs.containsKey('user-data');
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    bool isLogin = sharedPrefs.containsKey('user-data');
     if (isLogin) {
       userInfo = await getUserInfo();
     }
