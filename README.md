@@ -1,7 +1,9 @@
 # Task Manager Practice Project
 
 
-https://github.com/toh1n/task_manager/assets/89094831/c1d09c16-74fd-4668-851c-d602c400fc9c
+
+
+https://github.com/toh1n/task_manager/assets/89094831/f89d41f4-c70e-4066-991a-c596e95c41a8
 
 
 
