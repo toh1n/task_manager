@@ -1,6 +1,9 @@
 # Task Manager Practice Project
 
-<iframe width="560" height="315" src="s/video" frameborder="0" allowfullscreen></iframe>
+
+https://github.com/toh1n/task_manager/assets/89094831/c1d09c16-74fd-4668-851c-d602c400fc9c
+
+
 
 
 <img src="s/ (1).png" alt="alt text" width="270" height="570"> <img src="s/ (2).png" alt="alt text" width="270" height="570"> <img src="s/ (3).png" alt="alt text" width="270" height="570"> 
