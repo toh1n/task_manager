@@ -1,16 +1,10 @@
-# task_manager
+# Task Manager Practice Project
 
-A new Flutter project.
+<iframe width="560" height="315" src="s/video" frameborder="0" allowfullscreen></iframe>
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+<img src="s/ (1).png" alt="alt text" width="270" height="570"> <img src="s/ (2).png" alt="alt text" width="270" height="570"> <img src="s/ (3).png" alt="alt text" width="270" height="570"> 
 
-A few resources to get you started if this is your first Flutter project:
+<img src="s/ (4).png" alt="alt text" width="270" height="570"> <img src="s/ (5).png" alt="alt text" width="270" height="570"> <img src="s/ (6).png" alt="alt text" width="270" height="570"> 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="s/ (7).png" alt="alt text" width="270" height="570"> <img src="s/ (8).png" alt="alt text" width="270" height="570"> <img src="s/ (9).png" alt="alt text" width="270" height="570"> 
