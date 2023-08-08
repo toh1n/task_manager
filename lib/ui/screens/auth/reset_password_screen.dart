@@ -7,6 +7,7 @@ import 'package:task_manager/data/services/network_response.dart';
 import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
 import 'package:task_manager/ui/screens/auth/login_screen.dart';
+import 'package:task_manager/ui/widgets/my_button.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -18,13 +19,16 @@ class ResetPasswordScreen extends StatefulWidget {
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   TextEditingController passwordTEController = TextEditingController();
-  bool _loginInProgress = false;
+  bool _resetPasswordInProgress = false;
 
   Future<void> resetPassword() async{
-    _loginInProgress = true;
+    _resetPasswordInProgress = true;
     SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     String? email = sharedPrefs.getString('email');
     String? otp = sharedPrefs.getString('otp');
+    if (mounted) {
+      setState(() {});
+    }
 
     Map<String,dynamic> requestBody = {
       "email": email,
@@ -42,7 +46,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     log(response.body.toString());
 
-    _loginInProgress = false;
+    _resetPasswordInProgress = false;
     if (mounted) {
       setState(() {});
     }
@@ -96,7 +100,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 const SizedBox(
                   height: 24,
                 ),
-                TextField(
+                const TextField(
                   keyboardType: TextInputType.emailAddress,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -110,23 +114,24 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   controller: passwordTEController,
                   obscureText: true,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Confirm Password',
                   ),
                 ),
                 const SizedBox(
                   height: 16,
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      resetPassword();
-
-                    },
-                    child: const Text('Confirm'),
-                  ),
-                ),
+                // SizedBox(
+                //   width: double.infinity,
+                //   child: ElevatedButton(
+                //     onPressed: () {
+                //       resetPassword();
+                //
+                //     },
+                //     child: const Text('Confirm'),
+                //   ),
+                // ),
+                MyButton(visible: _resetPasswordInProgress, voidCallback: resetPassword),
                 const SizedBox(
                   height: 16,
                 ),

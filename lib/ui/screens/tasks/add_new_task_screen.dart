@@ -3,6 +3,7 @@ import 'package:task_manager/data/services/network_response.dart';
 import 'package:task_manager/data/models/task_list_model.dart';
 import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
+import 'package:task_manager/ui/widgets/my_button.dart';
 import 'package:task_manager/ui/widgets/user_profile_banner.dart';
 
 class AddNewTaskScreen extends StatefulWidget {
@@ -89,20 +90,21 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Visibility(
-                      visible: _adNewTaskInProgress == false,
-                      replacement: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            addNewTask();
-                          },
-                          child: const Icon(Icons.arrow_forward_ios)),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   width: double.infinity,
+                  //   child: Visibility(
+                  //     visible: _adNewTaskInProgress == false,
+                  //     replacement: const Center(
+                  //       child: CircularProgressIndicator(),
+                  //     ),
+                  //     child: ElevatedButton(
+                  //         onPressed: () {
+                  //           addNewTask();
+                  //         },
+                  //         child: const Icon(Icons.arrow_forward_ios)),
+                  //   ),
+                  // ),
+                  MyButton(visible: _adNewTaskInProgress, voidCallback: addNewTask),
                 ],
               ),
             ),

@@ -8,6 +8,7 @@ import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
 import 'package:task_manager/ui/screens/auth/otp_verification.dart';
 import 'package:task_manager/ui/screens/bottom_nav_base_screen.dart';
+import 'package:task_manager/ui/widgets/my_button.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     if (mounted) {
       setState(() {});
     }
-    if (response.isSuccess) {
+    if (response.body?["status"] == "success") {
       await AuthUtility.saveString('email',emailTEController.text);
       emailTEController.clear();
       if (mounted) {
@@ -44,7 +45,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Incorrect email or password')));
+            const SnackBar(content: Text('No user found')));
       }
     }
   }
@@ -87,19 +88,20 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 const SizedBox(
                   height: 16,
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: Visibility(
-                    visible: _verifyInProgress == false,
-                    replacement: const Center(child: CircularProgressIndicator(),),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        verifyEmail();
-                      },
-                      child: const Icon(Icons.arrow_circle_right_outlined),
-                    ),
-                  ),
-                ),
+                // SizedBox(
+                //   width: double.infinity,
+                //   child: Visibility(
+                //     visible: _verifyInProgress == false,
+                //     replacement: const Center(child: CircularProgressIndicator(),),
+                //     child: ElevatedButton(
+                //       onPressed: () {
+                //         verifyEmail();
+                //       },
+                //       child: const Icon(Icons.arrow_circle_right_outlined),
+                //     ),
+                //   ),
+                // ),
+                MyButton(visible: _verifyInProgress, voidCallback: verifyEmail),
                 const SizedBox(
                   height: 16,
                 ),

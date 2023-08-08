@@ -1,10 +1,9 @@
+import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screens/tasks/cancelled_task_screen.dart';
 import 'package:task_manager/ui/screens/tasks/completed_task_screen.dart';
 import 'package:task_manager/ui/screens/tasks/in_progress_task_screen.dart';
 import 'package:task_manager/ui/screens/tasks/new_task_screen.dart';
-import 'package:task_manager/ui/widgets/user_profile_banner.dart';
-
 class BottomNavBaseScreen extends StatefulWidget {
   const BottomNavBaseScreen({Key? key}) : super(key: key);
 
@@ -14,6 +13,7 @@ class BottomNavBaseScreen extends StatefulWidget {
 
 class _BottomNavBaseScreenState extends State<BottomNavBaseScreen> {
   int _selectedScreenIndex = 0;
+  bool isActive = true;
   final List<Widget> _screens = const [
     NewTaskScreen(),
     InProgressTaskScreen(),
@@ -25,27 +25,26 @@ class _BottomNavBaseScreenState extends State<BottomNavBaseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_selectedScreenIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedScreenIndex,
-        unselectedItemColor: Colors.grey,
-        unselectedLabelStyle: const TextStyle(
-            color: Colors.grey
-        ),
-        showUnselectedLabels: true,
-        selectedItemColor: Colors.green,
-        onTap: (int index) {
-          _selectedScreenIndex = index;
-          if (mounted) {
-            setState(() {});
-          }
+      bottomNavigationBar: FlashyTabBar(
+        animationDuration: const Duration(milliseconds: 400),
+        selectedIndex: _selectedScreenIndex,
+        onItemSelected: (int index) {
+              _selectedScreenIndex = index;
+              if (mounted) {
+                setState(() {});
+              }
         },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: 'New'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_tree), label: 'In Progress'),
-          BottomNavigationBarItem(icon: Icon(Icons.cancel_outlined), label: 'Cancel'),
-          BottomNavigationBarItem(icon: Icon(Icons.done_all), label: 'Completed'),
-        ],
+        showElevation: true,
+        
+        items: [
+          FlashyTabBarItem(icon: const Icon(Icons.menu), title: const Text('New'),activeColor: Colors.green,inactiveColor: Colors.blueGrey),
+          FlashyTabBarItem(icon: const Icon(Icons.trending_up), title: const Text('In Progress'),activeColor: Colors.green,inactiveColor: Colors.blueGrey),
+          FlashyTabBarItem(icon: const Icon(Icons.cancel_outlined), title: const Text('Cancelled'),activeColor: Colors.green,inactiveColor: Colors.blueGrey),
+          FlashyTabBarItem(icon: const Icon(Icons.done_all), title: const Text('Completed'),activeColor: Colors.green,inactiveColor: Colors.blueGrey),
+
+        ], 
       ),
+
     );
   }
 }

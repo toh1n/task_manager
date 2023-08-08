@@ -7,6 +7,7 @@ import 'package:task_manager/data/utils/urls.dart';
 import 'package:task_manager/ui/screens/auth/signup_screen.dart';
 import 'package:task_manager/ui/screens/bottom_nav_base_screen.dart';
 import 'package:task_manager/ui/screens/auth/email_verification_screen.dart';
+import 'package:task_manager/ui/widgets/my_button.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -34,9 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final NetworkResponse response = await NetworkCaller()
         .postRequest(Urls.login, requestBody, isLogin: true);
     _loginInProgress = false;
-    if (mounted) {
-      setState(() {});
-    }
     if (response.isSuccess) {
       LoginModel model = LoginModel.fromJson(response.body!);
       await AuthUtility.saveUserInfo(model);
@@ -95,20 +93,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Visibility(
-                      visible: _loginInProgress == false,
-                      replacement: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            login();
-                          },
-                          child: const Icon(Icons.arrow_forward_ios)),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   width: double.infinity,
+                  //   child: Visibility(
+                  //     visible: _loginInProgress == false,
+                  //     replacement: const Center(
+                  //       child: CircularProgressIndicator(),
+                  //     ),
+                  //     child: ElevatedButton(
+                  //         onPressed: () {
+                  //           login();
+                  //         },
+                  //         child: const Icon(Icons.arrow_forward_ios)),
+                  //   ),
+                  // ),
+                  MyButton(visible: _loginInProgress, voidCallback: login),
                   const SizedBox(
                     height: 16,
                   ),

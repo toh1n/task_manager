@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,7 @@ import 'package:task_manager/data/services/network_response.dart';
 import 'package:task_manager/data/utils/auth_utility.dart';
 import 'package:task_manager/data/utils/urls.dart';
 import 'package:task_manager/ui/screens/bottom_nav_base_screen.dart';
+import 'package:task_manager/ui/widgets/my_button.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 import 'package:task_manager/ui/widgets/user_profile_banner.dart';
 
@@ -251,19 +253,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       const SizedBox(
                         height: 16,
                       ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: _profileInProgress
-                            ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                            : ElevatedButton(
-                          onPressed: () {
-                            updateProfile();
-                          },
-                          child: const Text('Update'),
-                        ),
-                      )
+                      // SizedBox(
+                      //   width: double.infinity,
+                      //   child: _profileInProgress
+                      //       ? const Center(
+                      //     child: CircularProgressIndicator(),
+                      //   )
+                      //       : ElevatedButton(
+                      //     onPressed: () {
+                      //       updateProfile();
+                      //     },
+                      //     child: const Text('Update'),
+                      //   ),
+                      // )
+                      MyButton(visible: _profileInProgress, voidCallback: updateProfile)
                     ],
                   ),
                 ),

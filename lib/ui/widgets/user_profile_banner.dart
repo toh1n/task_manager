@@ -50,7 +50,7 @@ class _UserProfileAppBarState extends State<UserProfileAppBar> {
                 children: [
                   Visibility(
                     visible: isNull == false,
-                    replacement: Icon(Icons.person),
+                    replacement: const Icon(Icons.person),
                     child: CircleAvatar(
                       backgroundImage: MemoryImage(base64Decode(base64Image!)),
                     ),

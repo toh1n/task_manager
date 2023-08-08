@@ -1,8 +1,11 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:task_manager/data/services/network_response.dart';
 import 'package:task_manager/data/models/summary_count_model.dart';
 import 'package:task_manager/data/models/task_list_model.dart';
 import 'package:task_manager/data/services/network_caller.dart';
+import 'package:task_manager/data/utils/auth_utility.dart';
 import 'package:task_manager/data/utils/manage_task_data_utility.dart';
 import 'package:task_manager/data/utils/urls.dart';
 import 'package:task_manager/ui/screens/tasks/add_new_task_screen.dart';
@@ -23,6 +26,8 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   bool _getCountSummaryInProgress = false, _getNewTaskInProgress = false;
   SummaryCountModel _summaryCountModel = SummaryCountModel();
   TaskListModel _taskListModel = TaskListModel();
+  String? base64Image;
+  bool isNull = true;
 
   @override
   void initState() {
@@ -31,7 +36,15 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       getCountSummary();
       getNewTasks();
     });
+    base64Image = AuthUtility.userInfo.data?.photo;
+    if(base64Image != null)
+    {
+      isNull = false;
+    }
   }
+
+
+  List<String> taskType = ['New','Progress', 'Canceled','Completed'];
 
   Future<void> getCountSummary() async {
     _getCountSummaryInProgress = true;
@@ -40,6 +53,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     }
     final NetworkResponse response =
         await NetworkCaller().getRequest(Urls.taskStatusCount);
+    log(response.body.toString());
     if (response.isSuccess) {
       _summaryCountModel = SummaryCountModel.fromJson(response.body!);
     } else {
@@ -73,7 +87,6 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       setState(() {});
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

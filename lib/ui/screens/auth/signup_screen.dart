@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/data/services/network_response.dart';
 import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
+import 'package:task_manager/ui/screens/auth/login_screen.dart';
+import 'package:task_manager/ui/widgets/my_button.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -52,6 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Registration success!')));
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> const LoginScreen()), (route) => false);
       }
     } else {
       if (mounted) {
@@ -163,21 +166,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(
                       height: 16,
                     ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Visibility(
-                        visible: _signUpInProgress == false,
-                        replacement: const Center(child: CircularProgressIndicator()),
-                        child: ElevatedButton(
-                            onPressed: () {
-                              if (!_formKey.currentState!.validate()) {
-                                return;
-                              }
-                              userSignUp();
-                            },
-                            child: const Icon(Icons.arrow_forward_ios)),
-                      ),
-                    ),
+                    // SizedBox(
+                    //   width: double.infinity,
+                    //   child: Visibility(
+                    //     visible: _signUpInProgress == false,
+                    //     replacement: const Center(child: CircularProgressIndicator()),
+                    //     child: ElevatedButton(
+                    //         onPressed: () {
+                    //           if (!_formKey.currentState!.validate()) {
+                    //             return;
+                    //           }
+                    //           userSignUp();
+                    //         },
+                    //         child: const Icon(Icons.arrow_forward_ios)),
+                    //   ),
+                    // ),
+                    MyButton(visible: _signUpInProgress, voidCallback: (){
+                                if (!_formKey.currentState!.validate()) {
+                                  return;
+                                }
+                                userSignUp();
+                    }),
                     const SizedBox(
                       height: 16,
                     ),
