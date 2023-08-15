@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_manager/data/utils/auth_utility.dart';
 import 'package:task_manager/ui/screens/auth/login_screen.dart';
 import 'package:task_manager/ui/screens/auth/update_profile_screen.dart';
+import 'package:task_manager/ui/utils/assets_utils.dart';
 
 class UserProfileAppBar extends StatefulWidget {
   final bool? isUpdateScreen;
@@ -45,7 +47,7 @@ class _UserProfileAppBarState extends State<UserProfileAppBar> {
                 children: [
                   Visibility(
                     visible: base64Image!.isEmpty == false,
-                    replacement: const Icon(Icons.person),
+                    replacement: ClipOval(child: SvgPicture.asset(AssetUtils.personSVG,fit: BoxFit.cover,height: 40,width: 40,)),
                     child: CircleAvatar(
                       backgroundImage: MemoryImage(base64Decode(base64Image!)),
                     ),
