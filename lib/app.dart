@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screens/splash_screen.dart';
+import 'package:get/get.dart';
+import 'package:task_manager/ui/state_managers/email_verify_controller.dart';
+import 'package:task_manager/ui/state_managers/login_controller.dart';
+import 'package:task_manager/ui/state_managers/otp_verify_controller.dart';
+import 'package:task_manager/ui/state_managers/reset_password_controller.dart';
+import 'package:task_manager/ui/state_managers/sign_up_controller.dart';
 
 class TaskManagerApp extends StatefulWidget {
   static GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
@@ -12,8 +18,9 @@ class TaskManagerApp extends StatefulWidget {
 class _TaskManagerAppState extends State<TaskManagerApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      initialBinding: ControllerBinding(),
       key: TaskManagerApp.globalKey,
       title: 'Task Manager',
       theme: ThemeData(
@@ -72,4 +79,16 @@ class _TaskManagerAppState extends State<TaskManagerApp> {
       home: const SplashScreen(),
     );
   }
+}
+
+class ControllerBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(LoginController());
+    Get.put(SignUpController());
+    Get.put(EmailVerifyController());
+    Get.put(OtpVerifyController());
+    Get.put(ResetPasswordController());
+  }
+
 }
