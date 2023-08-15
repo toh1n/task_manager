@@ -6,6 +6,7 @@ import 'package:task_manager/data/models/task_list_model.dart';
 import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
 import 'package:task_manager/ui/widgets/update_task_status_sheet.dart';
+import 'package:get/get.dart';
 
 class ManageDataUtility {
   ManageDataUtility._();
@@ -22,24 +23,17 @@ class ManageDataUtility {
       },
     );
   }
-  static Future<void> _deleteTask(BuildContext context, String taskId,TaskListModel taskListModel,VoidCallback onUpdate) async {
+  static Future<bool> _deleteTask(BuildContext context, String taskId,TaskListModel taskListModel,VoidCallback onUpdate) async {
 
     final NetworkResponse response =
     await NetworkCaller().getRequest(Urls.deleteTask(taskId));
     if (response.isSuccess) {
       taskListModel.data!.removeWhere((element) => element.sId == taskId);
       onUpdate();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Task Deleted')),
-      );
-      onUpdate();
+      return true;
 
     } else {
-      onUpdate();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Deletion of task has been failed')),
-        );
-      onUpdate();
+      return false;
     }
   }
   static void showDeleteAlertDialog(BuildContext context, String taskId,TaskListModel taskListModel, VoidCallback onUpdate) {
@@ -53,14 +47,20 @@ class ManageDataUtility {
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
               onPressed: () {
-                Navigator.pop(context, 'ok');
+                Navigator.pop(context);
               },
               child: const Text('No'),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
               onPressed: () {
-                _deleteTask(context, taskId, taskListModel, onUpdate);
+                _deleteTask(context, taskId, taskListModel, onUpdate).then((value){
+                  if(value){
+                    Get.snackbar("Success", "Successfully deleted");
+                  } else{
+                    Get.snackbar("Failed", "Failed to deleted");
+                  }
+                });
                 Navigator.pop(context);
               },
               child: const Text(

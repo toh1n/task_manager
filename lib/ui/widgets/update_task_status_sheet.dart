@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/data/services/network_response.dart';
+import 'package:get/get.dart';
 import 'package:task_manager/data/models/task_list_model.dart';
-import 'package:task_manager/data/services/network_caller.dart';
-import 'package:task_manager/data/utils/urls.dart';
+import 'package:task_manager/ui/state_managers/widget_controllers/update_task_status_controller.dart';
 
 class UpdateTaskStatusSheet extends StatefulWidget {
   final TaskData task;
@@ -19,7 +18,6 @@ class UpdateTaskStatusSheet extends StatefulWidget {
 class _UpdateTaskStatusSheetState extends State<UpdateTaskStatusSheet> {
   List<String> taskStatusList = ['New', 'Progress', 'Canceled', 'Completed'];
   late String _selectedTask;
-  bool updateTaskInProgress = false;
 
   @override
   void initState() {
@@ -27,29 +25,6 @@ class _UpdateTaskStatusSheetState extends State<UpdateTaskStatusSheet> {
     super.initState();
   }
 
-  Future<void> updateTask(String taskId, String newStatus) async {
-    updateTaskInProgress = true;
-    if (mounted) {
-      setState(() {});
-    }
-    final NetworkResponse response =
-    await NetworkCaller().getRequest(Urls.updateTask(taskId, newStatus));
-    updateTaskInProgress = false;
-    if (mounted) {
-      setState(() {});
-    }
-    if (response.isSuccess) {
-      widget.onUpdate();
-      if (mounted) {
-        Navigator.pop(context);
-      }
-    } else {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Update task status has been failed')));
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,18 +50,30 @@ class _UpdateTaskStatusSheetState extends State<UpdateTaskStatusSheet> {
                   );
                 }),
           ),
-          Padding(
-              padding: const EdgeInsets.all(16),
-              child: Visibility(
-                  visible: updateTaskInProgress == false,
-                  replacement: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        updateTask(widget.task.sId!, _selectedTask);
-                      },
-                      child: const Text('Update'))))
+          GetBuilder<UpdateTaskStatusController>(
+            builder: (updateTaskStatusController) {
+              return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Visibility(
+                      visible: updateTaskStatusController.updateTaskInProgress == false,
+                      replacement: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            updateTaskStatusController.updateTask(widget.task.sId!, _selectedTask).then((value){
+                              if(value){
+                                Get.snackbar("Success", "Successfully Deleted");
+                                widget.onUpdate();
+                                Navigator.pop(context);
+                              }else{
+                                Get.snackbar("Failed", "Update task status has been failed");
+                              }
+                            });
+                          },
+                          child: const Text('Update'))));
+            }
+          )
         ],
       ),
     );
