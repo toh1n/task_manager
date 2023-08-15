@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/data/services/network_response.dart';
-import 'package:task_manager/data/services/network_caller.dart';
-import 'package:task_manager/data/utils/urls.dart';
+import 'package:get/get.dart';
+import 'package:task_manager/ui/screens/bottom_nav_base_screen.dart';
+import 'package:task_manager/ui/state_managers/add_new_task_controller.dart';
 import 'package:task_manager/ui/widgets/my_button.dart';
 import 'package:task_manager/ui/widgets/user_profile_banner.dart';
 
@@ -14,41 +14,10 @@ class AddNewTaskScreen extends StatefulWidget {
 
 class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   final TextEditingController _titleTEController = TextEditingController();
-  final TextEditingController _descriptionTEController = TextEditingController();
-  bool _adNewTaskInProgress = false;
+  final TextEditingController _descriptionTEController =
+      TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Future<void> addNewTask() async {
-    _adNewTaskInProgress = true;
-    if (mounted) {
-      setState(() {});
-    }
-    Map<String, dynamic> requestBody = {
-      "title": _titleTEController.text.trim(),
-      "description": _descriptionTEController.text.trim(),
-      "status": "New"
-    };
-    final NetworkResponse response =
-        await NetworkCaller().postRequest(Urls.createTask, requestBody);
-    _adNewTaskInProgress = false;
-    if (mounted) {
-      setState(() {});
-    }
-    if (response.isSuccess) {
-      _titleTEController.clear();
-      _descriptionTEController.clear();
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Task added successfully')));
-        Navigator.pop(context, 'OK');
-      }
-    } else {
-      if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('Task add failed!')));
-        Navigator.pop(context, 'OK');
-      }
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,54 +26,76 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const UserProfileAppBar(),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Text(
-                    'Add new task',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  TextFormField(
-                    controller: _titleTEController,
-                    decoration: const InputDecoration(hintText: 'Title'),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  TextFormField(
-                    controller: _descriptionTEController,
-                    maxLines: 4,
-                    decoration: const InputDecoration(
-                      hintText: 'Description',
+            Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 16,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  // SizedBox(
-                  //   width: double.infinity,
-                  //   child: Visibility(
-                  //     visible: _adNewTaskInProgress == false,
-                  //     replacement: const Center(
-                  //       child: CircularProgressIndicator(),
-                  //     ),
-                  //     child: ElevatedButton(
-                  //         onPressed: () {
-                  //           addNewTask();
-                  //         },
-                  //         child: const Icon(Icons.arrow_forward_ios)),
-                  //   ),
-                  // ),
-                  MyButton(visible: _adNewTaskInProgress, voidCallback: addNewTask),
-                ],
+                    Text(
+                      'Add new task',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    TextFormField(
+                      controller: _titleTEController,
+                      decoration: const InputDecoration(hintText: 'Title'),
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Enter some text';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    TextFormField(
+                      controller: _descriptionTEController,
+                      maxLines: 4,
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Enter some text';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Description',
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    GetBuilder<AddNewTaskController>(
+                        builder: (addNewTaskController) {
+                      return MyButton(
+                          visible: addNewTaskController.adNewTaskInProgress,
+                          voidCallback: () {
+                            if (_formKey.currentState!.validate()) {
+                              addNewTaskController
+                                  .addNewTask(_titleTEController.text.trim(),
+                                      _descriptionTEController.text.trim())
+                                  .then((value) {
+                                if (value) {
+                                  Get.snackbar(
+                                      "Success", "New Task added Successfully");
+                                  Get.offAll(const BottomNavBaseScreen());
+                                } else {
+                                  Get.snackbar(
+                                      "Failed", "Failed to add new task");
+                                }
+                              });
+                            }
+                          });
+                    }),
+                  ],
+                ),
               ),
             ),
           ],

@@ -30,12 +30,9 @@ class _BottomNavBaseScreenState extends State<BottomNavBaseScreen> {
         selectedIndex: _selectedScreenIndex,
         onItemSelected: (int index) {
               _selectedScreenIndex = index;
-              if (mounted) {
-                setState(() {});
-              }
+              setState(() {});
         },
         showElevation: true,
-        
         items: [
           FlashyTabBarItem(icon: const Icon(Icons.menu), title: const Text('New'),activeColor: Colors.green,inactiveColor: Colors.blueGrey),
           FlashyTabBarItem(icon: const Icon(Icons.trending_up), title: const Text('In Progress'),activeColor: Colors.green,inactiveColor: Colors.blueGrey),
