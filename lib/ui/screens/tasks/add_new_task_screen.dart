@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/ui/screens/bottom_nav_base_screen.dart';
-import 'package:task_manager/ui/state_managers/add_new_task_controller.dart';
+import 'package:task_manager/ui/state_managers/task_controllers/add_new_task_controller.dart';
 import 'package:task_manager/ui/widgets/my_button.dart';
 import 'package:task_manager/ui/widgets/user_profile_banner.dart';
 

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screens/splash_screen.dart';
 import 'package:get/get.dart';
-import 'package:task_manager/ui/state_managers/add_new_task_controller.dart';
-import 'package:task_manager/ui/state_managers/cancelled_task_controller.dart';
-import 'package:task_manager/ui/state_managers/completed_task_controller.dart';
-import 'package:task_manager/ui/state_managers/email_verify_controller.dart';
-import 'package:task_manager/ui/state_managers/in_progress_task_controller.dart';
-import 'package:task_manager/ui/state_managers/login_controller.dart';
-import 'package:task_manager/ui/state_managers/new_task_controller.dart';
-import 'package:task_manager/ui/state_managers/otp_verify_controller.dart';
-import 'package:task_manager/ui/state_managers/reset_password_controller.dart';
-import 'package:task_manager/ui/state_managers/sign_up_controller.dart';
-import 'package:task_manager/ui/state_managers/summary_count_controller.dart';
-import 'package:task_manager/ui/state_managers/update_profile_controller.dart';
+import 'package:task_manager/ui/state_managers/auth_controllers/login_controller.dart';
+import 'package:task_manager/ui/state_managers/task_controllers/add_new_task_controller.dart';
+import 'package:task_manager/ui/state_managers/auth_controllers/email_verify_controller.dart';
+import 'package:task_manager/ui/state_managers/task_controllers/cancelled_task_controller.dart';
+import 'package:task_manager/ui/state_managers/task_controllers/completed_task_controller.dart';
+import 'package:task_manager/ui/state_managers/task_controllers/in_progress_task_controller.dart';
+import 'package:task_manager/ui/state_managers/auth_controllers/otp_verify_controller.dart';
+import 'package:task_manager/ui/state_managers/auth_controllers/reset_password_controller.dart';
+import 'package:task_manager/ui/state_managers/auth_controllers/sign_up_controller.dart';
+import 'package:task_manager/ui/state_managers/task_controllers/new_task_controller.dart';
+import 'package:task_manager/ui/state_managers/task_controllers/summary_count_controller.dart';
+import 'package:task_manager/ui/state_managers/auth_controllers/update_profile_controller.dart';
 
 class TaskManagerApp extends StatefulWidget {
   static GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();

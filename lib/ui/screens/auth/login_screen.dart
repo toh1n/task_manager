@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:task_manager/ui/screens/auth/signup_screen.dart';
 import 'package:task_manager/ui/screens/auth/email_verification_screen.dart';
 import 'package:task_manager/ui/screens/bottom_nav_base_screen.dart';
-import 'package:task_manager/ui/state_managers/login_controller.dart';
+import 'package:task_manager/ui/state_managers/auth_controllers/login_controller.dart';
 import 'package:task_manager/ui/widgets/my_button.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 

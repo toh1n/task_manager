@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:task_manager/ui/screens/auth/login_screen.dart';
 import 'package:task_manager/ui/screens/auth/reset_password_screen.dart';
-import 'package:task_manager/ui/state_managers/otp_verify_controller.dart';
+import 'package:task_manager/ui/state_managers/auth_controllers/otp_verify_controller.dart';
 import 'package:task_manager/ui/widgets/my_button.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 

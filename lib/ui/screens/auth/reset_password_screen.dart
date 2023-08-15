@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/ui/screens/auth/login_screen.dart';
-import 'package:task_manager/ui/state_managers/reset_password_controller.dart';
+import 'package:task_manager/ui/state_managers/auth_controllers/reset_password_controller.dart';
 import 'package:task_manager/ui/widgets/my_button.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/data/utils/manage_task_data_utility.dart';
-import 'package:task_manager/ui/state_managers/cancelled_task_controller.dart';
+import 'package:task_manager/ui/state_managers/task_controllers/cancelled_task_controller.dart';
 import 'package:task_manager/ui/widgets/task_list_tile.dart';
 import 'package:task_manager/ui/widgets/user_profile_banner.dart';
 

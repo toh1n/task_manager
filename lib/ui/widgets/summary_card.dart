@@ -1,26 +1,5 @@
 import 'package:flutter/material.dart';
 
-// class FixedPositionCard extends StatelessWidget {
-//   final int number;
-//   final String title;
-//
-//   const FixedPositionCard({
-//     Key? key,
-//     required this.number,
-//     required this.title,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.center, // Center the card horizontally
-//       children: [
-//         SummaryCard(number: number, title: title),
-//       ],
-//     );
-//   }
-// }
-
 class SummaryCard extends StatelessWidget {
   final int number;
   final String title;
@@ -43,7 +22,7 @@ class SummaryCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded( // Wrap the Column with Expanded
+                  Expanded(
                     child: Text(
                       '${number < 10 ? '0$number' : number}',
                       style: const TextStyle(

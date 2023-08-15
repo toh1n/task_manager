@@ -1,3 +1,4 @@
+
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screens/tasks/cancelled_task_screen.dart';
@@ -12,6 +13,7 @@ class BottomNavBaseScreen extends StatefulWidget {
 }
 
 class _BottomNavBaseScreenState extends State<BottomNavBaseScreen> {
+
   int _selectedScreenIndex = 0;
   bool isActive = true;
   final List<Widget> _screens = const [
