@@ -13,9 +13,8 @@ class CanceledTaskScreen extends StatefulWidget {
 }
 
 class _CanceledTaskScreenState extends State<CanceledTaskScreen> {
-
-
-  final CancelledTaskController _cancelledTaskController = Get.find<CancelledTaskController>();
+  final CancelledTaskController _cancelledTaskController =
+      Get.find<CancelledTaskController>();
 
   @override
   void initState() {
@@ -32,37 +31,47 @@ class _CanceledTaskScreenState extends State<CanceledTaskScreen> {
         child: Column(
           children: [
             const UserProfileAppBar(),
-            GetBuilder<CancelledTaskController>(
-              builder: (_) {
-                return Expanded(
-                  child: _cancelledTaskController.getCanceledTasksProgress
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : ListView.separated(
-                          itemCount: _cancelledTaskController.taskListModel.data?.length ?? 0,
-                          itemBuilder: (context, index) {
-                            return TaskListTile(
-                              data: _cancelledTaskController.taskListModel.data![index],
-                              onDeleteTap: () {
-                                ManageDataUtility.showDeleteAlertDialog(context, _cancelledTaskController.taskListModel.data![index].sId!, _cancelledTaskController.taskListModel, () {
-                                  setState(() {});
-                                });
-                              },
-                              onEditTap: () {
-                                ManageDataUtility.showStatusUpdateBottomSheet(context, _cancelledTaskController.taskListModel.data![index], () {_cancelledTaskController.getCanceledTasks(); });
-                              },
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return const Divider(
-                              height: 4,
-                            );
-                          },
-                        ),
-                );
-              }
-            ),
+            GetBuilder<CancelledTaskController>(builder: (_) {
+              return Expanded(
+                child: _cancelledTaskController.getCanceledTasksProgress
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ListView.separated(
+                        itemCount: _cancelledTaskController
+                                .taskListModel.data?.length ??
+                            0,
+                        itemBuilder: (context, index) {
+                          return TaskListTile(
+                            data: _cancelledTaskController
+                                .taskListModel.data![index],
+                            onDeleteTap: () {
+                              ManageDataUtility.showDeleteAlertDialog(
+                                  context,
+                                  _cancelledTaskController
+                                      .taskListModel.data![index].sId!,
+                                  _cancelledTaskController.taskListModel, () {
+                                setState(() {});
+                              });
+                            },
+                            onEditTap: () {
+                              ManageDataUtility.showStatusUpdateBottomSheet(
+                                  context,
+                                  _cancelledTaskController
+                                      .taskListModel.data![index], () {
+                                _cancelledTaskController.getCanceledTasks();
+                              });
+                            },
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider(
+                            height: 4,
+                          );
+                        },
+                      ),
+              );
+            }),
           ],
         ),
       ),

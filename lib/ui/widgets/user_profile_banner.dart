@@ -21,11 +21,11 @@ class UserProfileAppBar extends StatefulWidget {
 class _UserProfileAppBarState extends State<UserProfileAppBar> {
   String? base64Image;
   @override
-  void initState(){
+  void initState() {
     super.initState();
     base64Image = AuthUtility.userInfo.data?.photo;
-
   }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -47,7 +47,13 @@ class _UserProfileAppBarState extends State<UserProfileAppBar> {
                 children: [
                   Visibility(
                     visible: base64Image!.isEmpty == false,
-                    replacement: ClipOval(child: SvgPicture.asset(AssetUtils.personSVG,fit: BoxFit.cover,height: 40,width: 40,)),
+                    replacement: ClipOval(
+                        child: SvgPicture.asset(
+                      AssetUtils.personSVG,
+                      fit: BoxFit.cover,
+                      height: 40,
+                      width: 40,
+                    )),
                     child: CircleAvatar(
                       backgroundImage: MemoryImage(base64Decode(base64Image!)),
                     ),

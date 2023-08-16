@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (_formKey.currentState!.validate()) {
                           loginController
                               .login(_emailTEController.text.trim(),
-                              _passwordTEController.text)
+                                  _passwordTEController.text)
                               .then((result) {
                             if (result) {
                               Get.offAll(() => const BottomNavBaseScreen());
@@ -95,9 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           });
                         }
-
-                      }
-                      );
+                      });
                 }),
                 const SizedBox(
                   height: 16,

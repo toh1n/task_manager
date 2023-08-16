@@ -106,5 +106,4 @@ class ControllerBinding extends Bindings {
     Get.put(CompletedTaskController());
     Get.put(UpdateTaskStatusController());
   }
-
 }

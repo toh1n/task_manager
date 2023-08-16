@@ -40,7 +40,7 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
       "description": _descriptionTEController.text.trim(),
     };
     final NetworkResponse response =
-    await NetworkCaller().postRequest(Urls.createTask, requestBody);
+        await NetworkCaller().postRequest(Urls.createTask, requestBody);
     _updateTaskInProgress = false;
     if (mounted) {
       setState(() {});
@@ -65,7 +65,7 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
   Widget build(BuildContext context) {
     return Padding(
       padding:
-      EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

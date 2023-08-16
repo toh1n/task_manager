@@ -13,8 +13,8 @@ class CompletedTaskScreen extends StatefulWidget {
 }
 
 class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
-
-  final CompletedTaskController _completedTaskController = Get.find<CompletedTaskController>();
+  final CompletedTaskController _completedTaskController =
+      Get.find<CompletedTaskController>();
 
   @override
   void initState() {
@@ -24,7 +24,6 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,37 +31,47 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
         child: Column(
           children: [
             const UserProfileAppBar(),
-            GetBuilder<CompletedTaskController>(
-              builder: (_) {
-                return Expanded(
-                  child: _completedTaskController.getCompletedTasksProgress
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : ListView.separated(
-                          itemCount: _completedTaskController.taskListModel.data?.length ?? 0,
-                          itemBuilder: (context, index) {
-                            return TaskListTile(
-                              data: _completedTaskController.taskListModel.data![index],
-                              onDeleteTap: () {
-                                ManageDataUtility.showDeleteAlertDialog(context, _completedTaskController.taskListModel.data![index].sId!, _completedTaskController.taskListModel, () {
-                                  setState(() {});
-                                });
-                              },
-                              onEditTap: () {
-                                ManageDataUtility.showStatusUpdateBottomSheet(context, _completedTaskController.taskListModel.data![index], () { _completedTaskController.getCompletedTasks();});
-                              },
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return const Divider(
-                              height: 4,
-                            );
-                          },
-                        ),
-                );
-              }
-            ),
+            GetBuilder<CompletedTaskController>(builder: (_) {
+              return Expanded(
+                child: _completedTaskController.getCompletedTasksProgress
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ListView.separated(
+                        itemCount: _completedTaskController
+                                .taskListModel.data?.length ??
+                            0,
+                        itemBuilder: (context, index) {
+                          return TaskListTile(
+                            data: _completedTaskController
+                                .taskListModel.data![index],
+                            onDeleteTap: () {
+                              ManageDataUtility.showDeleteAlertDialog(
+                                  context,
+                                  _completedTaskController
+                                      .taskListModel.data![index].sId!,
+                                  _completedTaskController.taskListModel, () {
+                                setState(() {});
+                              });
+                            },
+                            onEditTap: () {
+                              ManageDataUtility.showStatusUpdateBottomSheet(
+                                  context,
+                                  _completedTaskController
+                                      .taskListModel.data![index], () {
+                                _completedTaskController.getCompletedTasks();
+                              });
+                            },
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider(
+                            height: 4,
+                          );
+                        },
+                      ),
+              );
+            }),
           ],
         ),
       ),

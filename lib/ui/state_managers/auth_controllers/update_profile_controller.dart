@@ -12,14 +12,15 @@ class UpdateProfileController extends GetxController {
   String _image = '';
   bool _profileUpdateInProgress = false;
   bool get profileUpdateInProgress => _profileUpdateInProgress;
-  void imageSet(String value){
+  void imageSet(String value) {
     _image = value;
   }
+
   String get image => _image;
 
   Future<void> pickImage() async {
     final pickedImage =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       _image = pickedImage.path;
       final bytes = File(_image).readAsBytesSync();
@@ -28,7 +29,8 @@ class UpdateProfileController extends GetxController {
     }
   }
 
-  Future<bool> updateProfile(String firstName,String lastName,String mobile,String password,String email) async {
+  Future<bool> updateProfile(String firstName, String lastName, String mobile,
+      String password, String email) async {
     _profileUpdateInProgress = true;
     update();
 
@@ -41,7 +43,7 @@ class UpdateProfileController extends GetxController {
     };
 
     final NetworkResponse response =
-    await NetworkCaller().postRequest(Urls.profileUpdate, requestBody);
+        await NetworkCaller().postRequest(Urls.profileUpdate, requestBody);
     _profileUpdateInProgress = false;
     update();
     if (response.isSuccess) {
@@ -54,5 +56,4 @@ class UpdateProfileController extends GetxController {
       return false;
     }
   }
-
 }

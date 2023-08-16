@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:task_manager/data/services/network_response.dart';
 import 'package:task_manager/data/models/task_list_model.dart';
@@ -11,7 +9,8 @@ import 'package:get/get.dart';
 class ManageDataUtility {
   ManageDataUtility._();
 
-  static void showStatusUpdateBottomSheet(BuildContext context, TaskData task, VoidCallback onUpdate) {
+  static void showStatusUpdateBottomSheet(
+      BuildContext context, TaskData task, VoidCallback onUpdate) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -23,20 +22,22 @@ class ManageDataUtility {
       },
     );
   }
-  static Future<bool> _deleteTask(BuildContext context, String taskId,TaskListModel taskListModel,VoidCallback onUpdate) async {
 
+  static Future<bool> _deleteTask(BuildContext context, String taskId,
+      TaskListModel taskListModel, VoidCallback onUpdate) async {
     final NetworkResponse response =
-    await NetworkCaller().getRequest(Urls.deleteTask(taskId));
+        await NetworkCaller().getRequest(Urls.deleteTask(taskId));
     if (response.isSuccess) {
       taskListModel.data!.removeWhere((element) => element.sId == taskId);
       onUpdate();
       return true;
-
     } else {
       return false;
     }
   }
-  static void showDeleteAlertDialog(BuildContext context, String taskId,TaskListModel taskListModel, VoidCallback onUpdate) {
+
+  static void showDeleteAlertDialog(BuildContext context, String taskId,
+      TaskListModel taskListModel, VoidCallback onUpdate) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -54,10 +55,11 @@ class ManageDataUtility {
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
               onPressed: () {
-                _deleteTask(context, taskId, taskListModel, onUpdate).then((value){
-                  if(value){
+                _deleteTask(context, taskId, taskListModel, onUpdate)
+                    .then((value) {
+                  if (value) {
                     Get.snackbar("Success", "Successfully deleted");
-                  } else{
+                  } else {
                     Get.snackbar("Failed", "Failed to deleted");
                   }
                 });
@@ -72,5 +74,4 @@ class ManageDataUtility {
       },
     );
   }
-
 }

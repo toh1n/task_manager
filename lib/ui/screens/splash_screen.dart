@@ -25,7 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3)).then((_) async {
       final bool isLoggedIn = await AuthUtility.checkIfUserLoggedIn();
       if (mounted) {
-        Get.offAll( () => isLoggedIn ? const BottomNavBaseScreen() : const LoginScreen());
+        Get.offAll(() =>
+            isLoggedIn ? const BottomNavBaseScreen() : const LoginScreen());
       }
     });
   }

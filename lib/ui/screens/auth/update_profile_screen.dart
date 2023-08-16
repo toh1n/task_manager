@@ -27,9 +27,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _image = '';
   final UserData _userData = AuthUtility.userInfo.data!;
-  final UpdateProfileController _updateProfileController = Get.find<UpdateProfileController>();
-
-
+  final UpdateProfileController _updateProfileController =
+      Get.find<UpdateProfileController>();
 
   @override
   void initState() {
@@ -42,9 +41,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     _updateProfileController.imageSet(_image);
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +51,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const UserProfileAppBar(isUpdateScreen: true,),
+                const UserProfileAppBar(
+                  isUpdateScreen: true,
+                ),
                 const SizedBox(
                   height: 24,
                 ),
@@ -73,58 +71,63 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      GetBuilder<UpdateProfileController>(
-                        builder: (context) {
-                          return Center(
-                            child: Stack(
-                              children: [
-                                Container(
-                                  height: 130,
-                                  width: 130,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(width: 4, color: Colors.black12),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: ClipOval(
-                                    child: Visibility(
-                                      visible: _updateProfileController.image.isEmpty == false,
-                                      replacement: SvgPicture.asset(AssetUtils.personSVG,fit: BoxFit.cover,),
-                                      child: Image.memory(
-                                        base64Decode(_updateProfileController.image),
-                                        fit: BoxFit.cover,
-                                        width: 130,
-                                        height: 130,
-                                      ),
+                      GetBuilder<UpdateProfileController>(builder: (context) {
+                        return Center(
+                          child: Stack(
+                            children: [
+                              Container(
+                                height: 130,
+                                width: 130,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 4, color: Colors.black12),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipOval(
+                                  child: Visibility(
+                                    visible: _updateProfileController
+                                            .image.isEmpty ==
+                                        false,
+                                    replacement: SvgPicture.asset(
+                                      AssetUtils.personSVG,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    child: Image.memory(
+                                      base64Decode(
+                                          _updateProfileController.image),
+                                      fit: BoxFit.cover,
+                                      width: 130,
+                                      height: 130,
                                     ),
                                   ),
                                 ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: Container(
-                                    height: 40,
-                                    width: 40,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        width: 2,
-                                        color: Colors.red,
-                                      ),
-                                      color: Colors.blue,
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      width: 2,
+                                      color: Colors.red,
                                     ),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        _updateProfileController.pickImage();
-                                      },
-                                      child: const Icon(Icons.edit),
-                                    ),
+                                    color: Colors.blue,
                                   ),
-                                )
-                              ],
-                            ),
-                          );
-                        }
-                      ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _updateProfileController.pickImage();
+                                    },
+                                    child: const Icon(Icons.edit),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      }),
                       const SizedBox(
                         height: 12,
                       ),
@@ -178,8 +181,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           hintText: 'Mobile',
                         ),
                         validator: (String? value) {
-                          if ((value?.isEmpty ?? true) ||
-                              value!.length < 11) {
+                          if ((value?.isEmpty ?? true) || value!.length < 11) {
                             return 'Enter your valid mobile no';
                           }
                           return null;
@@ -195,8 +197,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           hintText: 'Password',
                         ),
                         validator: (String? value) {
-                          if ((value?.isEmpty ?? true) ||
-                              value!.length <= 5) {
+                          if ((value?.isEmpty ?? true) || value!.length <= 5) {
                             return 'Enter a password more than 6 letters';
                           }
                           return null;
@@ -206,34 +207,26 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         height: 16,
                       ),
                       MyButton(
-                          visible: _updateProfileController.profileUpdateInProgress,
+                          visible:
+                              _updateProfileController.profileUpdateInProgress,
                           voidCallback: () {
                             if (_formKey.currentState!.validate()) {
-                              _updateProfileController.updateProfile(_firstNameTEController.text, _lastNameTEController.text, _mobileTEController.text, _passwordTEController.text,_emailTEController.text).then((value){
-                                if(value){
-                                  Get.snackbar("Success", "message");
+                              _updateProfileController
+                                  .updateProfile(
+                                      _firstNameTEController.text,
+                                      _lastNameTEController.text,
+                                      _mobileTEController.text,
+                                      _passwordTEController.text,
+                                      _emailTEController.text)
+                                  .then((value) {
+                                if (value) {
+                                  Get.snackbar("Success", "Profile Updated Successfully");
                                   Get.offAll(const BottomNavBaseScreen());
-                                }else{
-                                  Get.snackbar("Failed", "message");
+                                } else {
+                                  Get.snackbar("Failed", "Failed to update profile");
                                 }
                               });
                               setState(() {});
-                              // _updateProfileController
-                              //     .updateProfile(
-                              //         _passwordTEController.text,
-                              //         _firstNameTEController.text,
-                              //         _lastNameTEController.text,
-                              //         _mobileTEController.text)
-                              //     .then((value) {
-                              //   if (value) {
-                              //     Get.snackbar("Success",
-                              //         "Profile Updated Successfully");
-                              //     Get.offAll(const BottomNavBaseScreen());
-                              //   } else {
-                              //     Get.snackbar(
-                              //         "Failed", "Failed to update profile");
-                              //   }
-                              // });
                             }
                           })
                     ],

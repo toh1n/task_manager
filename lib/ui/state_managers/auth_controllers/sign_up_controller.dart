@@ -3,12 +3,17 @@ import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/services/network_response.dart';
 import 'package:task_manager/data/utils/urls.dart';
 
-class SignUpController extends GetxController{
-
+class SignUpController extends GetxController {
   bool _signUpInProgress = false;
   bool get signUpInProgress => _signUpInProgress;
 
-  Future<bool> userSignUp(String email,String password,String firsName, String lastName, String mobile,) async {
+  Future<bool> userSignUp(
+    String email,
+    String password,
+    String firsName,
+    String lastName,
+    String mobile,
+  ) async {
     _signUpInProgress = true;
     update();
 
@@ -22,7 +27,7 @@ class SignUpController extends GetxController{
     };
 
     final NetworkResponse response =
-    await NetworkCaller().postRequest(Urls.registration, requestBody);
+        await NetworkCaller().postRequest(Urls.registration, requestBody);
     _signUpInProgress = false;
     update();
     if (response.isSuccess) {
@@ -31,5 +36,4 @@ class SignUpController extends GetxController{
       return false;
     }
   }
-
 }

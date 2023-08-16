@@ -17,14 +17,10 @@ class OtpVerificationScreen extends StatefulWidget {
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   final TextEditingController _otpTEController = TextEditingController();
 
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,66 +45,69 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 Text(
                   'A 6 digits pin will sent to your email address',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey,
-                  ),
+                        color: Colors.grey,
+                      ),
                 ),
                 const SizedBox(
                   height: 24,
                 ),
-                GetBuilder<OtpVerifyController>(
-                  builder: (otpVerifyController) {
-                    return Column(
-                      children: [
-                        PinCodeTextField(
-                          length: 6,
-                          obscureText: false,
-                          animationType: AnimationType.fade,
-                          pinTheme: PinTheme(
-                              shape: PinCodeFieldShape.box,
-                              borderRadius: BorderRadius.circular(5),
-                              fieldHeight: 50,
-                              fieldWidth: 40,
-                              inactiveFillColor: Colors.grey,
-                              activeColor: Colors.green),
-                          animationDuration: const Duration(milliseconds: 300),
-                          enableActiveFill: true,
-                          controller: _otpTEController,
-                          onCompleted: (value) {
-                            otpVerifyController.verifyOtp(_otpTEController.text.trim()).then((value){
-                              if(value){
+                GetBuilder<OtpVerifyController>(builder: (otpVerifyController) {
+                  return Column(
+                    children: [
+                      PinCodeTextField(
+                        length: 6,
+                        obscureText: false,
+                        animationType: AnimationType.fade,
+                        pinTheme: PinTheme(
+                            shape: PinCodeFieldShape.box,
+                            borderRadius: BorderRadius.circular(5),
+                            fieldHeight: 50,
+                            fieldWidth: 40,
+                            inactiveFillColor: Colors.grey,
+                            activeColor: Colors.green),
+                        animationDuration: const Duration(milliseconds: 300),
+                        enableActiveFill: true,
+                        controller: _otpTEController,
+                        onCompleted: (value) {
+                          otpVerifyController
+                              .verifyOtp(_otpTEController.text.trim())
+                              .then((value) {
+                            if (value) {
+                              Get.snackbar("Success", "OTP Verified");
+                              Get.to(const ResetPasswordScreen());
+                            } else {
+                              Get.snackbar("Failed", "Wrong OTP");
+                            }
+                          });
+                        },
+                        onChanged: (value) {},
+                        beforeTextPaste: (text) {
+                          //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                          //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                          return true;
+                        },
+                        appContext: context,
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      MyButton(
+                          visible: otpVerifyController.verifyInProgress,
+                          voidCallback: () {
+                            otpVerifyController
+                                .verifyOtp(_otpTEController.text.trim())
+                                .then((value) {
+                              if (value) {
                                 Get.snackbar("Success", "OTP Verified");
                                 Get.to(const ResetPasswordScreen());
-                              } else{
+                              } else {
                                 Get.snackbar("Failed", "Wrong OTP");
                               }
                             });
-                          },
-                          onChanged: (value) {},
-                          beforeTextPaste: (text) {
-                            //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                            //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                            return true;
-                          },
-                          appContext: context,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        MyButton(visible: otpVerifyController.verifyInProgress, voidCallback: (){
-                          otpVerifyController.verifyOtp(_otpTEController.text.trim()).then((value){
-                          if(value){
-                            Get.snackbar("Success", "OTP Verified");
-                            Get.to(const ResetPasswordScreen());
-                          } else{
-                            Get.snackbar("Failed", "Wrong OTP");
-                          }
-                        });
-                        }),
-                      ],
-                    );
-                  }
-                ),
-
+                          }),
+                    ],
+                  );
+                }),
                 const SizedBox(
                   height: 16,
                 ),
@@ -126,7 +125,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const LoginScreen()),
-                                  (route) => false);
+                              (route) => false);
                         },
                         child: const Text('Sign in')),
                   ],

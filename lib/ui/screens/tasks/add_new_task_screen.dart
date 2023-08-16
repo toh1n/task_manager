@@ -48,7 +48,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                       decoration: const InputDecoration(hintText: 'Title'),
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Enter some text';
+                          return 'Enter some text.';
                         }
                         return null;
                       },

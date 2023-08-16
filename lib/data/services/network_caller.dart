@@ -31,8 +31,6 @@ class NetworkCaller {
   Future<NetworkResponse> verifyEmailRequest(String url) async {
     try {
       Response response = await get(Uri.parse(url));
-      log(response.statusCode.toString());
-      log(response.body);
       if (response.statusCode == 200) {
         return NetworkResponse(
             true, response.statusCode, jsonDecode(response.body));

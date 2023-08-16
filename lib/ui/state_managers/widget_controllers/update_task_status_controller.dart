@@ -3,7 +3,7 @@ import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/services/network_response.dart';
 import 'package:task_manager/data/utils/urls.dart';
 
-class UpdateTaskStatusController extends GetxController{
+class UpdateTaskStatusController extends GetxController {
   bool _updateTaskInProgress = false;
   bool get updateTaskInProgress => _updateTaskInProgress;
 
@@ -11,7 +11,7 @@ class UpdateTaskStatusController extends GetxController{
     _updateTaskInProgress = true;
     update();
     final NetworkResponse response =
-    await NetworkCaller().getRequest(Urls.updateTask(taskId, newStatus));
+        await NetworkCaller().getRequest(Urls.updateTask(taskId, newStatus));
     _updateTaskInProgress = false;
     update();
     if (response.isSuccess) {
@@ -21,5 +21,4 @@ class UpdateTaskStatusController extends GetxController{
       return false;
     }
   }
-
 }

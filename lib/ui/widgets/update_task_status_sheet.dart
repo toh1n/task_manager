@@ -25,7 +25,6 @@ class _UpdateTaskStatusSheetState extends State<UpdateTaskStatusSheet> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -51,29 +50,32 @@ class _UpdateTaskStatusSheetState extends State<UpdateTaskStatusSheet> {
                 }),
           ),
           GetBuilder<UpdateTaskStatusController>(
-            builder: (updateTaskStatusController) {
-              return Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Visibility(
-                      visible: updateTaskStatusController.updateTaskInProgress == false,
-                      replacement: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            updateTaskStatusController.updateTask(widget.task.sId!, _selectedTask).then((value){
-                              if(value){
-                                Get.snackbar("Success", "Successfully Deleted");
-                                widget.onUpdate();
-                                Navigator.pop(context);
-                              }else{
-                                Get.snackbar("Failed", "Update task status has been failed");
-                              }
-                            });
-                          },
-                          child: const Text('Update'))));
-            }
-          )
+              builder: (updateTaskStatusController) {
+            return Padding(
+                padding: const EdgeInsets.all(16),
+                child: Visibility(
+                    visible: updateTaskStatusController.updateTaskInProgress ==
+                        false,
+                    replacement: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          updateTaskStatusController
+                              .updateTask(widget.task.sId!, _selectedTask)
+                              .then((value) {
+                            if (value) {
+                              Get.snackbar("Success", "Successfully Deleted");
+                              widget.onUpdate();
+                              Navigator.pop(context);
+                            } else {
+                              Get.snackbar("Failed",
+                                  "Update task status has been failed");
+                            }
+                          });
+                        },
+                        child: const Text('Update'))));
+          })
         ],
       ),
     );

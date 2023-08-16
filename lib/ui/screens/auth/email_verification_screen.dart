@@ -9,14 +9,13 @@ class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({Key? key}) : super(key: key);
 
   @override
-  State<EmailVerificationScreen> createState() => _EmailVerificationScreenState();
+  State<EmailVerificationScreen> createState() =>
+      _EmailVerificationScreenState();
 }
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   final TextEditingController _emailTEController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -26,23 +25,25 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Form(
-              key:  _formKey,
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 64,),
+                  const SizedBox(
+                    height: 64,
+                  ),
                   Text(
                     'Your Email Address',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  const SizedBox(height: 4,),
+                  const SizedBox(
+                    height: 4,
+                  ),
                   Text(
                     'A 6 digits pin will be sent to your email address',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Colors.grey,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey,
+                        ),
                   ),
                   const SizedBox(
                     height: 24,
@@ -67,21 +68,25 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                     height: 16,
                   ),
                   GetBuilder<EmailVerifyController>(
-                    builder: (emailVerifyController) {
-                      return MyButton(visible: emailVerifyController.verifyInProgress, voidCallback:(){
-                        if(_formKey.currentState!.validate()){
-                          emailVerifyController.verifyEmail(_emailTEController.text).then((value){
-                            if(value){
-                              Get.snackbar("Code Sent", "Please Check your email");
-                              Get.to(const OtpVerificationScreen());
-                            } else{
-                              Get.snackbar("No User", "No User Found");
-                            }
-                          });
-                        }
-                      });
-                    }
-                  ),
+                      builder: (emailVerifyController) {
+                    return MyButton(
+                        visible: emailVerifyController.verifyInProgress,
+                        voidCallback: () {
+                          if (_formKey.currentState!.validate()) {
+                            emailVerifyController
+                                .verifyEmail(_emailTEController.text)
+                                .then((value) {
+                              if (value) {
+                                Get.snackbar(
+                                    "Code Sent", "Please Check your email");
+                                Get.to(const OtpVerificationScreen());
+                              } else {
+                                Get.snackbar("No User", "No User Found");
+                              }
+                            });
+                          }
+                        });
+                  }),
                   const SizedBox(
                     height: 16,
                   ),
@@ -93,9 +98,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                         style: TextStyle(
                             fontWeight: FontWeight.w500, letterSpacing: 0.5),
                       ),
-                      TextButton(onPressed: () {
-                        Navigator.pop(context);
-                      }, child: const Text('Sign in')),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Sign in')),
                     ],
                   )
                 ],

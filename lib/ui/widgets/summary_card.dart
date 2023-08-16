@@ -4,7 +4,8 @@ class SummaryCard extends StatelessWidget {
   final int number;
   final String title;
 
-  const SummaryCard({super.key,
+  const SummaryCard({
+    super.key,
     required this.number,
     required this.title,
   });
@@ -38,8 +39,7 @@ class SummaryCard extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                ]
-            ),
+                ]),
           ),
         ),
       ),

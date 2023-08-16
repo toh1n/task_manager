@@ -5,7 +5,7 @@ import 'package:task_manager/data/services/network_response.dart';
 import 'package:task_manager/data/utils/auth_utility.dart';
 import 'package:task_manager/data/utils/urls.dart';
 
-class OtpVerifyController extends GetxController{
+class OtpVerifyController extends GetxController {
   bool _verifyInProgress = false;
   bool get verifyInProgress => _verifyInProgress;
 
@@ -16,12 +16,12 @@ class OtpVerifyController extends GetxController{
     update();
 
     String otpUrl = "${Urls.resetPassOTP}$email/$otp";
-    final NetworkResponse response = await NetworkCaller()
-        .verifyEmailRequest(otpUrl);
+    final NetworkResponse response =
+        await NetworkCaller().verifyEmailRequest(otpUrl);
     _verifyInProgress = false;
     update();
     if (response.body?["status"] == "success") {
-      await AuthUtility.saveString('otp',otp);
+      await AuthUtility.saveString('otp', otp);
       return true;
     } else {
       return false;

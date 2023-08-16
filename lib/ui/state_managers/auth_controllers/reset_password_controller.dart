@@ -5,28 +5,26 @@ import 'package:task_manager/data/services/network_response.dart';
 import 'package:task_manager/data/utils/auth_utility.dart';
 import 'package:task_manager/data/utils/urls.dart';
 
-class ResetPasswordController extends GetxController{
+class ResetPasswordController extends GetxController {
   bool _resetPasswordInProgress = false;
 
   bool get resetPasswordInProgress => _resetPasswordInProgress;
 
-  Future<bool> resetPassword(String password) async{
+  Future<bool> resetPassword(String password) async {
     _resetPasswordInProgress = true;
     SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     String? email = sharedPrefs.getString('email');
     String? otp = sharedPrefs.getString('otp');
     update();
 
-    Map<String,dynamic> requestBody = {
+    Map<String, dynamic> requestBody = {
       "email": email,
       "OTP": otp,
       "password": password
     };
 
-
-
     final NetworkResponse response =
-    await NetworkCaller().postRequest(Urls.resetPass, requestBody);
+        await NetworkCaller().postRequest(Urls.resetPass, requestBody);
 
     _resetPasswordInProgress = false;
     update();

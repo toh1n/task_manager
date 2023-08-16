@@ -4,7 +4,7 @@ import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/services/network_response.dart';
 import 'package:task_manager/data/utils/urls.dart';
 
-class CompletedTaskController extends GetxController{
+class CompletedTaskController extends GetxController {
   bool _getCompletedTasksProgress = false;
   TaskListModel _taskListModel = TaskListModel();
   bool get getCompletedTasksProgress => _getCompletedTasksProgress;
@@ -14,7 +14,7 @@ class CompletedTaskController extends GetxController{
     _getCompletedTasksProgress = true;
     update();
     final NetworkResponse response =
-    await NetworkCaller().getRequest(Urls.completedTasks);
+        await NetworkCaller().getRequest(Urls.completedTasks);
     _getCompletedTasksProgress = false;
     update();
     if (response.isSuccess) {
