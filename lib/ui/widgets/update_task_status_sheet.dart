@@ -65,12 +65,12 @@ class _UpdateTaskStatusSheetState extends State<UpdateTaskStatusSheet> {
                               .updateTask(widget.task.sId!, _selectedTask)
                               .then((value) {
                             if (value) {
-                              Get.snackbar("Success", "Successfully Deleted");
+                              Get.snackbar("Success", "Task updated status Successfully");
                               widget.onUpdate();
                               Navigator.pop(context);
                             } else {
                               Get.snackbar("Failed",
-                                  "Update task status has been failed");
+                                  "Updating task status has failed");
                             }
                           });
                         },
