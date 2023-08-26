@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:task_manager/data/utils/auth_utility.dart';
 import 'package:task_manager/ui/screens/auth/login_screen.dart';
@@ -23,10 +24,6 @@ class _UserProfileAppBarState extends State<UserProfileAppBar> {
   void initState(){
     super.initState();
     base64Image = AuthUtility.userInfo.data?.photo;
-    if(base64Image != null)
-      {
-        isNull = false; 
-      }
 
   }
   @override
@@ -49,7 +46,7 @@ class _UserProfileAppBarState extends State<UserProfileAppBar> {
               child: Row(
                 children: [
                   Visibility(
-                    visible: isNull == false,
+                    visible: base64Image!.isEmpty == false,
                     replacement: const Icon(Icons.person),
                     child: CircleAvatar(
                       backgroundImage: MemoryImage(base64Decode(base64Image!)),
